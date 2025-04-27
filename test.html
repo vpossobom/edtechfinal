@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belief Explorer Prototype</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .button {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+    .assumption {
+      margin-top: 10px;
+    }
+    .counterpoint {
+      margin-top: 5px;
+      padding-left: 15px;
+      display: none;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Belief Explorer</h1>
+
+  <div class="card">
+    <label for="beliefSelect"><strong>Select a belief you hold strongly:</strong></label><br>
+    <select id="beliefSelect" style="width: 100%; padding: 8px; margin-top: 10px;">
+      <option value="productive">I must be productive every day</option>
+      <option value="success">Success means constant achievement</option>
+      <option value="approval">I need others' approval to be happy</option>
+    </select>
+    <button class="button" onclick="analyzeBelief()">Analyze Belief</button>
+  </div>
+
+  <div id="assumptionsContainer"></div>
+
+  <script>
+    const beliefs = {
+      productive: [
+        {
+          text: "Productivity defines my value.",
+          counterpoint: "Is your value really based on constant productivity, or is this a social expectation you've internalized?"
+        },
+        {
+          text: "Idle time is wasted time.",
+          counterpoint: "Could it be that fearing idle time is a defense against confronting deeper discomfort?"
+        },
+        {
+          text: "I must earn my right to relax.",
+          counterpoint: "Who decided relaxation must be earned, and why does that rule control your life?"
+        }
+      ],
+      success: [
+        {
+          text: "Achievement is the only measure of success.",
+          counterpoint: "Is external achievement really proof of personal worth, or just an arbitrary standard you absorbed?"
+        },
+        {
+          text: "Failure is unacceptable.",
+          counterpoint: "Is the fear of failure holding you back from deeper, more meaningful risks?"
+        },
+        {
+          text: "Only constant achievement leads to respect.",
+          counterpoint: "Are you sure respect must be earned through exhaustion, and not through authenticity?"
+        }
+      ],
+      approval: [
+        {
+          text: "Other people's approval determines my worth.",
+          counterpoint: "Are you outsourcing your self-worth to people who may not even know your true self?"
+        },
+        {
+          text: "Disapproval means I am wrong or bad.",
+          counterpoint: "Could it be that disapproval says more about the other person's expectations than about your value?"
+        },
+        {
+          text: "I must please everyone to be accepted.",
+          counterpoint: "If pleasing everyone demands self-betrayal, is the acceptance you gain truly meaningful?"
+        }
+      ]
+    };
+
+    function analyzeBelief() {
+      const container = document.getElementById('assumptionsContainer');
+      container.innerHTML = '';
+
+      const selectedBelief = document.getElementById('beliefSelect').value;
+      const selectedAssumptions = beliefs[selectedBelief];
+
+      selectedAssumptions.forEach((item, index) => {
+        const assumptionDiv = document.createElement('div');
+        assumptionDiv.className = 'card assumption';
+        assumptionDiv.innerHTML = `
+          <div><strong>Assumption ${index + 1}:</strong> ${item.text}</div>
+          <button class="button" onclick="toggleCounterpoint(${index})">Explore</button>
+          <div id="counterpoint-${index}" class="counterpoint">${item.counterpoint}</div>
+        `;
+        container.appendChild(assumptionDiv);
+      });
+    }
+
+    function toggleCounterpoint(index) {
+      const cp = document.getElementById(`counterpoint-${index}`);
+      cp.style.display = cp.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+
+</body>
+</html>
